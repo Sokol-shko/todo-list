@@ -1,18 +1,24 @@
 <template>
     <div>
-        <!--    <span>{{ }}</span>-->
-        <!--    <button type="button">x</button>-->
+        <button @click.self="$emit('complete')" type="button">{{ task.title }}</button>
+        <button @click="$emit('remove')" type="button">x</button>
     </div>
 </template>
 
 <script>
     export default {
         name: 'TaskItem',
-        data: ()=> {
-
+        props: ['task'],
+        computed: {
+            // className() {
+            //     let classes = ['class_item_toggle'];
+            //     if ()
+            // }
         },
+        data: ()=> ({
+
+        }),
         methods: {
-            renderTaskItem() {}
 
         }
     }

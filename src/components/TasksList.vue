@@ -3,29 +3,41 @@
         <input type="text" placeholder="Название задачи" v-model="newTask">
         <button v-if="newTask !== ''" type="button" @click="newTask = ''">x</button>
         <button type="button" @click="addTask">+ Добавить</button>
-        <div v-if="tasksList.length > 0">
-            <div v-for="item in tasksList" :key="item" @remove="removeTask(item)">
-                <span>{{ item }}</span>
-                <button @click="$emit('remove')" type="button">x</button>
-            </div>
+        <div v-if="tasks.length > 0">
+            <TaskItem  v-for="(task, index) in tasks" :task="task" :key="task.id" @remove="removeTask(index)" @complete="completeTask(task)"></TaskItem>
         </div>
     </div>
 </template>
 
+
+
 <script>
+    import TaskItem from "./TaskItem";
     export default {
         name: 'TasksList',
+        components: { TaskItem },
+        props: {
+            tasks: { default: [] }
+        },
         data: ()=> ({
             newTask: '',
-            tasksList: []
+            tasks: []
         }),
         methods: {
             addTask() {
-                this.tasksList.push(this.newTask);
-                return console.log(this.tasksList);
+                if (this.newTask) {
+                    this.tasks.push({
+                        title: this.newTask,
+                        completed: false
+                    });
+                    this.newTask = '';
+                }
             },
-            removeTask(item) {
-                this.tasksList.slice(item, 1);
+            completeTask(task) {
+                task.completed = ! task.completed;
+            },
+            removeTask(index) {
+                this.tasks.splice(index, 1);
             }
         }
     }
